@@ -1,0 +1,154 @@
+﻿services:
+  api-gateway:
+    build:
+      context: .
+      dockerfile: api-gateway/Dockerfile
+    container_name: hotelmaster-api-gateway
+    env_file: .env
+    ports:
+      - "32037:8500"
+    depends_on:
+      - room-service
+      - booking-service
+      - frontdesk-service
+      - housekeeping-service
+      - extra-service
+      - reports-service
+      - notification-service
+    networks: [hotelmaster-net]
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: hotelmaster-frontend
+    env_file: .env
+    ports:
+      - "32038:5178"
+    depends_on:
+      - api-gateway
+    networks: [hotelmaster-net]
+
+  room-service:
+    build:
+      context: .
+      dockerfile: room-service/Dockerfile
+    container_name: hotelmaster-room
+    env_file: .env
+    ports:
+      - "32039:8501"
+    depends_on:
+      - postgres
+      - redis
+    networks: [hotelmaster-net]
+
+  booking-service:
+    build:
+      context: .
+      dockerfile: booking-service/Dockerfile
+    container_name: hotelmaster-booking
+    env_file: .env
+    ports:
+      - "32040:8502"
+    depends_on:
+      - postgres
+      - redis
+      - rabbitmq
+    networks: [hotelmaster-net]
+
+  frontdesk-service:
+    build:
+      context: .
+      dockerfile: frontdesk-service/Dockerfile
+    container_name: hotelmaster-frontdesk
+    env_file: .env
+    ports:
+      - "32041:8503"
+    depends_on:
+      - postgres
+    networks: [hotelmaster-net]
+
+  housekeeping-service:
+    build:
+      context: .
+      dockerfile: housekeeping-service/Dockerfile
+    container_name: hotelmaster-housekeeping
+    env_file: .env
+    ports:
+      - "32042:8504"
+    depends_on:
+      - redis
+    networks: [hotelmaster-net]
+
+  extra-service:
+    build:
+      context: .
+      dockerfile: extra-service/Dockerfile
+    container_name: hotelmaster-extra
+    env_file: .env
+    ports:
+      - "32043:8505"
+    depends_on:
+      - postgres
+    networks: [hotelmaster-net]
+
+  reports-service:
+    build:
+      context: .
+      dockerfile: reports-service/Dockerfile
+    container_name: hotelmaster-reports
+    env_file: .env
+    ports:
+      - "32044:8506"
+    depends_on:
+      - postgres
+      - redis
+    networks: [hotelmaster-net]
+
+  notification-service:
+    build:
+      context: .
+      dockerfile: notification-service/Dockerfile
+    container_name: hotelmaster-notification
+    env_file: .env
+    ports:
+      - "32045:8507"
+    depends_on:
+      - redis
+      - rabbitmq
+    networks: [hotelmaster-net]
+
+  postgres:
+    image: postgres:16
+    container_name: hotelmaster-postgres
+    environment:
+      POSTGRES_DB: hotelmaster
+      POSTGRES_USER: hotelmaster
+      POSTGRES_PASSWORD: hotelmaster
+    ports:
+      - "32046:5432"
+    volumes:
+      - hotelmaster_postgres_data:/var/lib/postgresql/data
+    networks: [hotelmaster-net]
+
+  redis:
+    image: redis:7
+    container_name: hotelmaster-redis
+    ports:
+      - "6395:6379"
+    networks: [hotelmaster-net]
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: hotelmaster-rabbitmq
+    ports:
+      - "5679:5672"
+      - "15679:15672"
+    networks: [hotelmaster-net]
+
+networks:
+  hotelmaster-net:
+    driver: bridge
+
+volumes:
+  hotelmaster_postgres_data:
