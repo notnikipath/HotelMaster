@@ -60,7 +60,7 @@ Implement end-to-end hotel operations:
 ## Local Run
 
 ```bash
-cd d:\Шарага\Кинжа9\Task_24_HotelMaster
+cd 'your/project/folder'
 docker compose up --build -d
 ```
 
