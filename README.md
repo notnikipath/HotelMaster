@@ -1,4 +1,4 @@
-﻿# HotelMaster
+# HotelMaster
 
 HotelMaster is a microservice PMS (Property Management System) for hotels, hostels, apart-hotels, and sanatoriums.
 
@@ -60,7 +60,7 @@ Implement end-to-end hotel operations:
 ## Local Run
 
 ```bash
-cd 'your/project/folder'
+cd HotelMaster
 docker compose up --build -d
 ```
 

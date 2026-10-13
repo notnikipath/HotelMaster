@@ -77,7 +77,7 @@ export function DashboardPage() {
       <header className="hero">
         <div>
           <p className="eyebrow">HotelMaster PMS</p>
-          <h1>Unified control for booking, check-in, housekeeping, and finance.</h1>
+          <h1>Hospitality overview</h1>
           <p className="subtitle">
             Live operations board for hotels, hostels, apart-hotels, and sanatoriums with pricing automation and occupancy forecast.
           </p>
